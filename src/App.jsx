@@ -263,6 +263,17 @@ function App() {
           </div>
         </div>
 
+        <div className="mobile-controls">
+          <button onClick={() => changeDirection({ x: 0, y: -1 })}>↑</button>
+
+          <div>
+            <button onClick={() => changeDirection({ x: -1, y: 0 })}>←</button>
+            <button onClick={() => changeDirection({ x: 1, y: 0 })}>→</button>
+          </div>
+
+          <button onClick={() => changeDirection({ x: 0, y: 1 })}>↓</button>
+        </div>
+
         <aside className="side-card">
           <p className="eyebrow">Stats</p>
           <h2>Session</h2>
