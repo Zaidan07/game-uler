@@ -24,7 +24,7 @@ function createFood(snake) {
     };
 
     const isOnSnake = snake.some(
-      (part) => part.x === food.x && part.y === food.y
+      (part) => part.x === food.x && part.y === food.y,
     );
 
     if (!isOnSnake) return food;
@@ -90,7 +90,7 @@ function App() {
   }
 
   function changeDirection(newDirection) {
-    const currentDirection = directionRef.current;
+    const currentDirection = nextDirectionRef.current;
 
     const isOpposite =
       currentDirection.x + newDirection.x === 0 &&
@@ -152,8 +152,14 @@ function App() {
           newHead.y < 0 ||
           newHead.y >= GRID_SIZE;
 
-        const hitSelf = currentSnake.some(
-          (part) => part.x === newHead.x && part.y === newHead.y
+        const ateFood = newHead.x === food.x && newHead.y === food.y;
+
+        // Kalau tidak makan, ekor akan pindah.
+        // Jadi ekor tidak perlu dihitung sebagai tabrakan.
+        const bodyToCheck = ateFood ? currentSnake : currentSnake.slice(0, -1);
+
+        const hitSelf = bodyToCheck.some(
+          (part) => part.x === newHead.x && part.y === newHead.y,
         );
 
         if (hitWall || hitSelf) {
@@ -162,8 +168,6 @@ function App() {
           setBestScore((prev) => Math.max(prev, score));
           return currentSnake;
         }
-
-        const ateFood = newHead.x === food.x && newHead.y === food.y;
 
         const newSnake = ateFood
           ? [newHead, ...currentSnake]
@@ -204,10 +208,10 @@ function App() {
               {isGameOver
                 ? "Game Over"
                 : showCaptcha
-                ? "Verification Required"
-                : isRunning
-                ? "Running"
-                : "Paused"}
+                  ? "Verification Required"
+                  : isRunning
+                    ? "Running"
+                    : "Paused"}
             </div>
           </div>
 
@@ -223,7 +227,7 @@ function App() {
               const y = Math.floor(index / GRID_SIZE);
 
               const isSnake = snake.some(
-                (part) => part.x === x && part.y === y
+                (part) => part.x === x && part.y === y,
               );
 
               const isHead = snake[0].x === x && snake[0].y === y;
